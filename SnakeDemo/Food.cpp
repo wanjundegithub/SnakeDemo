@@ -37,9 +37,8 @@ Point Food::GenerateFood(Snake snake,int max,int min)
 //画出食物
 void Food::DrawFood(Point point)
 {
-	SetWindow setting;
 	//设置当前食物位置
-	setting.SetCursorPosition(point.GetX, point.GetY);
-	setting.SetWindowsTextColor(45);
+	SetWindow::SetCursorPosition(point.GetX(), point.GetY());
+	SetWindow::SetWindowsTextColor(45);
 	cout << "+";
 }

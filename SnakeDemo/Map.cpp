@@ -1,31 +1,53 @@
 #include "Map.h"
 
-//point墙起始点坐标，rows墙的行数，cols墙的列数
-void Map::DrawWall(Point point,int rows,int cols)
+void Map::DrawWall()
 {
-	deque<Point> map;
-	int initialX = point.GetX(), initialY = point.GetY();
-	for (int x = initialX, y = initialY; x <= cols; x++)
+	if (abs(MaxX-MinX) < 50 || abs(MaxY-MinY) < 50)
+		throw exception("墙太小");
+	std::deque<Point> map;
+	for (int x = MinX, y = MinY; x <= MaxX-1; x++)
 	{
 		map.emplace_back(Point(x, y));
 	}
-	for (int x = initialX, y = initialY+1; y <= rows - 1; y++)
+	for (int x = MinX, y = MinY+1; y <= MaxY; y++)
 	{
 		map.emplace_back(Point(x, y));
 	}
-	for (int x = initialX, y = rows; x <= cols; x++)
+	for (int x = MinX+1, y = MaxY; x <= MaxX; x++)
 	{
 		map.emplace_back(Point(x, y));
 	}
-	for (int x = cols, y = initialY+1; y <= rows - 1; y++)
+	for (int x = MaxX, y = MinY; y <= MaxY - 1; y++)
 	{
 		map.emplace_back(Point(x, y));
 	}
 	//
-	SetWindow set;
-	for (auto &point : map)
-	{
-		set.SetCursorPosition(point.GetX(), point.GetY());
-		cout << "*";
-	}
+	DrawIcon::DrawMap(map);
+}
+
+int Map::GetMinX()
+{
+	return MinX;
+}
+
+int Map::GetMinY()
+{
+	return MinY;
+}
+
+int Map::GetMaxX()
+{
+	return MaxX;
+
+}
+
+int Map::GetMaxY()
+{
+	return MaxY;
+}
+
+//撞墙标志
+void Map::SetHitWallFlag(bool flag)
+{
+	HitWallFlag = flag;
 }

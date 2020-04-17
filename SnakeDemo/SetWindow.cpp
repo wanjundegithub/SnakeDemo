@@ -1,6 +1,6 @@
 #include "SetWindow.h"
 
-void SetWindow::SetWindowsTitleSize(int x, int y)
+void  SetWindow::SetWindowsTitleSize(int x, int y)
 {
 	system("title,贪吃蛇");
 	//设置窗口大小命令

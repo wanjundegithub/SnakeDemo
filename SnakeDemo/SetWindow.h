@@ -2,12 +2,12 @@
 #include<stdio.h>
 #include<Windows.h>
 
-class SetWindow
+static class SetWindow
 {
 public :
-	void SetWindowsTitleSize(int x, int y);
-	void SetCursorPosition(int x, int y);
-	void SetWindowsTextColor(int color);
-	void SetWindowsTextBackgroundColor();
+	static void  SetWindowsTitleSize(int x, int y);
+	static void  SetCursorPosition(int x, int y);
+	static void  SetWindowsTextColor(int color);
+	static void  SetWindowsTextBackgroundColor();
 };
 

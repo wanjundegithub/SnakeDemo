@@ -2,8 +2,8 @@
 #include<time.h>
 #include<conio.h>
 #include<iostream>
-#include<Snake.h>
-#include<SetWindow.h>
+#include"Snake.h"
+#include"SetWindow.h"
 class Food
 {
 public:
