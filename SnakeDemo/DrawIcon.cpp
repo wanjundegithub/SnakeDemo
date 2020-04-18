@@ -32,3 +32,12 @@ void DrawIcon::DrawFailure()
 	SetWindow::SetWindowsTextColor(50);
 	cout << "失败，是否退出?";
 }
+
+//画出食物
+void DrawIcon::DrawFood(Point point)
+{
+	//设置当前食物位置
+	SetWindow::SetCursorPosition(point.GetX(), point.GetY());
+	SetWindow::SetWindowsTextColor(45);
+	cout << "+";
+}

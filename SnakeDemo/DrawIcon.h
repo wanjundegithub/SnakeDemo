@@ -17,4 +17,6 @@ public:
 	static void DrawMap(std::deque<Point> map);
 	//画出失败标志(在Map的中间画)
 	static void DrawFailure();
+	//画食物
+	static void DrawFood(Point point);
 };
