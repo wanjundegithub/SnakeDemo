@@ -1,6 +1,6 @@
 #include "Snake.h"
 
-deque<Point> Snake::GetSnakePoints()
+std::deque<Point> Snake::GetSnakePoints()
 {
 	return SnakePoints;
 }
@@ -15,96 +15,101 @@ Direction Snake::GetSnakeOppositeDirection()
 	Direction dir;
 	switch (SnakeCurrentDirection)
 	{
-		case Up:
-			dir = Down;
+	case Direction::Up:
+			dir =Direction::Down;
 			break;
-		case Down:
-			dir = Up;
+		case Direction::Down:
+			dir = Direction::Up;
 			break;
-		case Left:
-			dir = Right;
+		case Direction::Left:
+			dir = Direction::Right;
 			break;
-		case Right:
-			dir = Left;
+		case Direction::Right:
+			dir = Direction::Left;
 			break;
 		default:
-			throw exception("不在限定方向范围内");
+			throw std::exception("不在限定方向范围内");
 			break;
 	}
 	return dir;
 }
 
 //蛇改变运动方向前进
-bool Snake::ChangeSnakeDirectionMove(Direction direction)
+bool Snake::ChangeSnakeDirectionMove(Direction direction,int speed,GameMap map)
 {
 	bool IsHitWallFlag = false;
 	//首先弹出最后一个元素坐标,并将最后一个元素坐标处的内容清空
 	Point point = SnakePoints.back();
-	DrawIcon::DrawEmpty(point);
+	//消去蛇尾
+	DrawGameIcon DrawObj;
+	DrawObj.DrawEmpty(point);
 	//获取头一个元素坐标
 	Point headpoint = SnakePoints.front();
 	SnakePoints.pop_back();
-	if (direction == Up)
+	if (direction == Direction::Up)
 	{
-		if (headpoint.GetY() - 1 == Map::GetMinY())
+		if (headpoint.GetY() - 1 == map.GetMinY())
 			IsHitWallFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() - 1);
 			SnakePoints.push_front(newHeadPoint);
-			SnakeCurrentDirection = Up;
+			SnakeCurrentDirection = Direction::Up;
 		}
 	}
-	else if (direction == Down)
+	else if (direction == Direction::Down)
 	{
-		if (headpoint.GetY() + 1 == Map::GetMaxY())
+		if (headpoint.GetY() + 1 == map.GetMaxY())
 			IsHitWallFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() + 1);
 			SnakePoints.push_front(newHeadPoint);
-			SnakeCurrentDirection = Down;
+			SnakeCurrentDirection = Direction::Down;
 		}
 	}
-	else if (direction == Left)
+	else if (direction == Direction::Left)
 	{
-		if (headpoint.GetX() - 1 == Map::GetMinY())
+		if (headpoint.GetX() - 1 == map.GetMinY())
 			IsHitWallFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX()-1, headpoint.GetY());
 			SnakePoints.push_front(newHeadPoint);
-			SnakeCurrentDirection = Left;
+			SnakeCurrentDirection = Direction::Left;
 		}
 	}
-	else if (direction == Right)
+	else if (direction == Direction::Right)
 	{
-		if (headpoint.GetX() + 1 == Map::GetMinY())
+		if (headpoint.GetX() + 1 == map.GetMinY())
 			IsHitWallFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX() + 1, headpoint.GetY());
 			SnakePoints.push_front(newHeadPoint);
-			SnakeCurrentDirection = Right;
+			SnakeCurrentDirection = Direction::Right;
 		}
 	}
-	DrawIcon::DrawSnake(SnakePoints);
+	DrawObj.DrawSnake(SnakePoints);
+	auto delayTime = 1000 / speed;
+	Sleep(delayTime);
 	return IsHitWallFlag;
 }
 
 //蛇不改变运动方向前进
-bool Snake::SnakeMove()
+bool Snake::SnakeMove(int speed,GameMap map)
 {
 	bool IsHitWallFlag = false;
 	//首先弹出最后一个元素坐标,并将最后一个元素坐标处的内容清空
 	Point point = SnakePoints.back();
-	DrawIcon::DrawEmpty(point);
+	DrawGameIcon DrawObj;
+	DrawObj.DrawEmpty(point);
 	//获取头一个元素坐标
 	Point headpoint = SnakePoints.front();
 	SnakePoints.pop_back();
-	if (SnakeCurrentDirection == Up)
+	if (SnakeCurrentDirection == Direction::Up)
 	{
-		if (headpoint.GetY() - 1 == Map::GetMinY())
+		if (headpoint.GetY() - 1 == map.GetMinY())
 			IsHitWallFlag = true;
 		else
 		{
@@ -112,9 +117,9 @@ bool Snake::SnakeMove()
 			SnakePoints.push_front(newHeadPoint);
 		}
 	}
-	else if (SnakeCurrentDirection == Down)
+	else if (SnakeCurrentDirection == Direction::Down)
 	{
-		if (headpoint.GetY() + 1 == Map::GetMaxY())
+		if (headpoint.GetY() + 1 == map.GetMaxY())
 			IsHitWallFlag = true;
 		else
 		{
@@ -122,9 +127,9 @@ bool Snake::SnakeMove()
 			SnakePoints.push_front(newHeadPoint);
 		}
 	}
-	else if (SnakeCurrentDirection==Left)
+	else if (SnakeCurrentDirection== Direction::Left)
 	{
-		if (headpoint.GetX() - 1 == Map::GetMinX())
+		if (headpoint.GetX() - 1 == map.GetMinX())
 			IsHitWallFlag = true;
 		else
 		{
@@ -132,9 +137,9 @@ bool Snake::SnakeMove()
 			SnakePoints.push_front(newHeadPoint);
 		}
 	}
-	else if (SnakeCurrentDirection == Right)
+	else if (SnakeCurrentDirection == Direction::Right)
 	{
-		if (headpoint.GetX() +1 == Map::GetMaxX())
+		if (headpoint.GetX() +1 == map.GetMaxX())
 			IsHitWallFlag = true;
 		else
 		{
@@ -142,20 +147,26 @@ bool Snake::SnakeMove()
 			SnakePoints.push_front(newHeadPoint);
 		}
 	}
-	DrawIcon::DrawSnake(SnakePoints);
+	DrawObj.DrawSnake(SnakePoints);
+	//移动时延迟时间
+	auto delayTime = 1000 / speed;
+	Sleep(delayTime);
 	return IsHitWallFlag;
 }
 
 
 //蛇吃食物
-bool Snake::EatFood()
+bool Snake::EatFood(Point foodPoint)
 {
+	DrawGameIcon DrawObj;
 	//蛇吃完食物的标志
 	bool IsFinishEat = false;
-	Point foodPoint = Food::GenerateFood(SnakePoints);
 	if (IsNeighborPoint(SnakePoints.front(),foodPoint))
 	{
 		SnakePoints.push_front(foodPoint);
+		//蛇增长，消除食物点
+		DrawObj.DrawSnake(SnakePoints);
+		DrawObj.DrawEmpty(foodPoint);
 		IsFinishEat = true;
 	}
 	return IsFinishEat;

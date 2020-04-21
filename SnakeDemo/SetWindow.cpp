@@ -5,7 +5,7 @@ void  SetWindow::SetWindowsTitleSize(int x, int y)
 	system("title,贪吃蛇");
 	//设置窗口大小命令
 	char cmd[30];
-	sprintf_s(cmd, "mode con cols=%d lines=%d", 2 * x, y);
+	sprintf_s(cmd, "mode con cols=%d lines=%d", 2*x, y);
 	system(cmd);
 }
 
@@ -13,7 +13,7 @@ void SetWindow::SetCursorPosition(int x, int y)
 {
 	//设置光标位置
 	COORD pos;
-	pos.X = 2 * x;
+	pos.X = 2*x;
 	pos.Y = y;
 	HANDLE outputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(outputHandle, pos);

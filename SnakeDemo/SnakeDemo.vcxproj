@@ -74,6 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\wanjun\source\repos\wanjundegithub\SnakeDemo\SnakeDemo;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -99,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\wanjun\source\repos\SnakeDemo\SnakeDemo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,19 +141,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Control.cpp" />
-    <ClCompile Include="DrawIcon.cpp" />
+    <ClCompile Include="DrawGameIcon.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="SetWindow.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Control.h" />
-    <ClInclude Include="DrawIcon.h" />
+    <ClInclude Include="DrawGameIcon.h" />
     <ClInclude Include="Food.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="SetWindow.h" />
     <ClInclude Include="Snake.h" />

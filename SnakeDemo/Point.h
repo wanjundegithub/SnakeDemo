@@ -1,5 +1,4 @@
 #pragma once
-#include"Map.h"
 class Point
 {
 public :
@@ -8,14 +7,18 @@ public :
 		X = x;
 		Y = y;
 	}
+	//拷贝构造函数，用于传递或返回point对象
+	Point(const Point& obj)
+	{
+		X = obj.X;
+		Y = obj.Y;
+	}
 	Point()
 	{
 
 	}
 	int GetX();
 	int GetY();
-	void SetX(int x);
-	void SetY(int y);
 private:
 	int X;
 	int Y;

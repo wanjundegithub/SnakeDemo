@@ -1,19 +1,12 @@
 #pragma once
-#include<vector>
-#include<deque>
-#include<iostream>
-#include"Point.h"
-#include"SetWindow.h"
-#include"Map.h"
-#include"DrawIcon.h"
+#include"DrawGameIcon.h"
 #include"Food.h"
 
-using namespace std;
-enum Direction
+enum class Direction
 {
 	Up=0,
-	Down,
-	Left,
+	Down=1,
+	Left=2,
 	Right=3
 };
 
@@ -21,28 +14,39 @@ class Snake
 {
 public:
 	//初始化Snake的三个点和Snake的初始朝向
-	Snake(deque<Point> snakePoints ,Direction direction=Down)
+	Snake(std::deque<Point> snakePoints ,Direction snakeCurrentDirection=Direction::Down)
 	{
 		SnakePoints = snakePoints;
-		SnakeCurrentDirection = direction;
+		SnakeCurrentDirection = snakeCurrentDirection;
 	}
-	deque<Point> GetSnakePoints();
+	//用于传递或返回Snake对象参数
+	Snake(Snake &obj)
+	{
+		SnakePoints = obj.SnakePoints;
+		SnakeCurrentDirection = obj.SnakeCurrentDirection;
+	}
+	Snake()
+	{
+
+	}
+	//获取蛇中的点
+	std::deque<Point> GetSnakePoints();
 	//获取蛇当前运动方向
 	Direction GetSnakeDirection();
 	//获取设当前运动反方向
 	Direction GetSnakeOppositeDirection();
 	//蛇改变方向移动
-	bool ChangeSnakeDirectionMove(Direction direction);
+	bool ChangeSnakeDirectionMove(Direction direction,int speed,GameMap map);
 	//蛇不改变方向移动
-	bool SnakeMove();
+	bool SnakeMove(int speed,GameMap map);
 	//蛇吃食物
-	bool EatFood();
+	bool EatFood(Point foodPoint);
 	//判定是否相邻格点
 	bool IsNeighborPoint(Point point1, Point point2);
 private:
 	//组成蛇的点
-	deque<Point> SnakePoints;
+	std::deque<Point> SnakePoints;
 	//蛇头当前运动的方向
-	static Direction SnakeCurrentDirection;
+	Direction SnakeCurrentDirection;
 };
 

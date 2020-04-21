@@ -2,21 +2,12 @@
 
 int Point::GetX()
 {
-	return this->X;
+	return X;
 }
 
 int Point::GetY()
 {
-	return this->Y;
+	return Y;
 }
 
-void Point::SetX(int x)
-{
-	this->X = x;
-}
-
-void Point::SetY(int y)
-{
-	this->Y = y;
-}
 

@@ -27,16 +27,16 @@
     <ClCompile Include="SetWindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Control.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Point.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DrawIcon.cpp">
+    <ClCompile Include="DrawGameIcon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,16 +50,16 @@
     <ClInclude Include="SetWindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Control.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DrawIcon.h">
+    <ClInclude Include="DrawGameIcon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

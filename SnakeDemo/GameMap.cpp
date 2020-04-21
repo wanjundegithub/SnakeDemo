@@ -1,9 +1,9 @@
-#include "Map.h"
+#include "GameMap.h"
 
-void Map::DrawWall()
+std::deque<Point> GameMap::CreateMapWall()
 {
-	if (abs(MaxX-MinX) < 50 || abs(MaxY-MinY) < 50)
-		throw exception("墙太小");
+	if (abs(MaxX-MinX) < 10 || abs(MaxY-MinY) < 10)
+		throw std::exception("墙太小");
 	std::deque<Point> map;
 	for (int x = MinX, y = MinY; x <= MaxX-1; x++)
 	{
@@ -21,33 +21,32 @@ void Map::DrawWall()
 	{
 		map.emplace_back(Point(x, y));
 	}
-	//
-	DrawIcon::DrawMap(map);
+	return map;
 }
 
-int Map::GetMinX()
+int GameMap::GetMinX()
 {
 	return MinX;
 }
 
-int Map::GetMinY()
+int GameMap::GetMinY()
 {
 	return MinY;
 }
 
-int Map::GetMaxX()
+int GameMap::GetMaxX()
 {
 	return MaxX;
 
 }
 
-int Map::GetMaxY()
+int GameMap::GetMaxY()
 {
 	return MaxY;
 }
 
 //撞墙标志
-void Map::SetHitWallFlag(bool flag)
+void GameMap::SetHitWallFlag(bool flag)
 {
 	HitWallFlag = flag;
 }
