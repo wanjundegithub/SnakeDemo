@@ -31,3 +31,17 @@ void SetWindow::SetWindowsTextBackgroundColor()
 	//设置文本背景色
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
 }
+
+Point SetWindow::GetConsoleCursorPosition()
+{
+	Point point;
+	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);;
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	if (GetConsoleScreenBufferInfo(hConsoleOutput, &cbsi))
+	{
+		point = Point((int)cbsi.dwCursorPosition.X/2, (int)cbsi.dwCursorPosition.Y);
+		return point;
+	}
+	else
+		throw std::exception("找不到光标插入出");
+}

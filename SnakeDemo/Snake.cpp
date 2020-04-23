@@ -37,7 +37,7 @@ Direction Snake::GetSnakeOppositeDirection()
 //蛇改变运动方向前进
 bool Snake::ChangeSnakeDirectionMove(Direction direction,int speed,GameMap map)
 {
-	bool IsHitWallFlag = false;
+	bool IsHitFlag = false;
 	//首先弹出最后一个元素坐标,并将最后一个元素坐标处的内容清空
 	Point point = SnakePoints.back();
 	//消去蛇尾
@@ -49,57 +49,65 @@ bool Snake::ChangeSnakeDirectionMove(Direction direction,int speed,GameMap map)
 	if (direction == Direction::Up)
 	{
 		if (headpoint.GetY() - 1 == map.GetMinY())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() - 1);
 			SnakePoints.push_front(newHeadPoint);
 			SnakeCurrentDirection = Direction::Up;
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (direction == Direction::Down)
 	{
 		if (headpoint.GetY() + 1 == map.GetMaxY())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() + 1);
 			SnakePoints.push_front(newHeadPoint);
 			SnakeCurrentDirection = Direction::Down;
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (direction == Direction::Left)
 	{
 		if (headpoint.GetX() - 1 == map.GetMinY())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX()-1, headpoint.GetY());
 			SnakePoints.push_front(newHeadPoint);
 			SnakeCurrentDirection = Direction::Left;
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (direction == Direction::Right)
 	{
-		if (headpoint.GetX() + 1 == map.GetMinY())
-			IsHitWallFlag = true;
+		if (headpoint.GetX() + 1 == map.GetMinY() )
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX() + 1, headpoint.GetY());
 			SnakePoints.push_front(newHeadPoint);
 			SnakeCurrentDirection = Direction::Right;
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	DrawObj.DrawSnake(SnakePoints);
 	auto delayTime = 1000 / speed;
 	Sleep(delayTime);
-	return IsHitWallFlag;
+	return IsHitFlag;
 }
 
 //蛇不改变运动方向前进
 bool Snake::SnakeMove(int speed,GameMap map)
 {
-	bool IsHitWallFlag = false;
+	bool IsHitFlag = false;
 	//首先弹出最后一个元素坐标,并将最后一个元素坐标处的内容清空
 	Point point = SnakePoints.back();
 	DrawGameIcon DrawObj;
@@ -110,48 +118,56 @@ bool Snake::SnakeMove(int speed,GameMap map)
 	if (SnakeCurrentDirection == Direction::Up)
 	{
 		if (headpoint.GetY() - 1 == map.GetMinY())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() - 1);
 			SnakePoints.push_front(newHeadPoint);
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (SnakeCurrentDirection == Direction::Down)
 	{
 		if (headpoint.GetY() + 1 == map.GetMaxY())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX(), headpoint.GetY() + 1);
 			SnakePoints.push_front(newHeadPoint);
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (SnakeCurrentDirection== Direction::Left)
 	{
 		if (headpoint.GetX() - 1 == map.GetMinX())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX()-1, headpoint.GetY() );
 			SnakePoints.push_front(newHeadPoint);
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	else if (SnakeCurrentDirection == Direction::Right)
 	{
 		if (headpoint.GetX() +1 == map.GetMaxX())
-			IsHitWallFlag = true;
+			IsHitFlag = true;
 		else
 		{
 			Point newHeadPoint(headpoint.GetX()+1, headpoint.GetY());
 			SnakePoints.push_front(newHeadPoint);
+			if (IsContainHeadPoint() == true)
+				IsHitFlag = true;
 		}
 	}
 	DrawObj.DrawSnake(SnakePoints);
 	//移动时延迟时间
 	auto delayTime = 1000 / speed;
 	Sleep(delayTime);
-	return IsHitWallFlag;
+	return IsHitFlag;
 }
 
 
@@ -180,5 +196,22 @@ bool Snake::IsNeighborPoint(Point point1, Point point2)
 	else if (abs(point1.GetX() - point2.GetX()) == 0 && abs(point1.GetY() - point2.GetY()) == 1)
 		return true;
 	return false;
+}
+
+bool Snake::IsContainHeadPoint()
+{
+	bool flag = false;
+	Point headPoint = SnakePoints.front();
+	//弹出头点
+	auto Points = SnakePoints;
+	Points.pop_front();
+	for (auto point : Points)
+	{
+		if (headPoint==point)
+			flag = true;
+		else
+			continue;
+	}
+	return flag;
 }
 

@@ -4,6 +4,8 @@
 void Control::InitGame()
 {
 	//游戏开始界面，欢迎进入游戏，点击Enter进入游戏界面
+	DrawGameIcon DrawObj;
+	bool ExitFlag = false;
 	SetWindow setWindow;
 	setWindow.SetWindowsTitleSize(30, 30);
 	setWindow.SetCursorPosition(7,15);
@@ -14,27 +16,22 @@ void Control::InitGame()
 		if (ch == EnterKey)
 		{
 			system("cls");
-			RunGame();
+			std::deque<Point> map= GreedGameMap.CreateMapWall();
+			DrawObj.DrawMap(map);
+			ExitFlag= KeyWordControl();
 		}
-		else if (ch == EscKey)
+		if (ch == EscKey||ExitFlag==true)
 			break;
 	}
 }
 
-//运行游戏
-void Control::RunGame()
-{
-	//画出游戏界面
-	std::deque<Point> map= GreedGameMap.CreateMapWall();
-	DrawGameIcon DrawObj;
-	DrawObj.DrawMap(map);
-	KeyWordControl();
-}
-
 
 //键盘响应事件
-void Control::KeyWordControl()
+bool Control::KeyWordControl()
 {
+	//退出标志
+	bool ExitFlag = false;
+	//失败标志
 	bool IsFailureFlag = false;
 	Food food;
 	DrawGameIcon DrawObj;
@@ -47,8 +44,6 @@ void Control::KeyWordControl()
 		if (_kbhit() == 1)
 		{
 			int ch = _getch();
-			if (ch == EscKey)
-				break;
 			if (ch == PauseSpaceKey)//暂停
 			{
 				while (true)
@@ -59,6 +54,7 @@ void Control::KeyWordControl()
 					else if (key == EscKey)//暂停时退出
 					{
 						ch = key;
+						ExitFlag = true;
 						break;
 					}
 					continue;
@@ -88,6 +84,11 @@ void Control::KeyWordControl()
 					break;
 				}
 			}
+			if (ch == EscKey)
+			{
+				ExitFlag = true;
+				break;
+			}
 		}
 		//无键按下,蛇保持运动
 		else
@@ -108,9 +109,17 @@ void Control::KeyWordControl()
 		if (IsFailureFlag == true)
 		{
 			DrawObj.DrawFailure(GreedGameMap);
+			Point continuePoint=DrawObj.DrawContinueGame(GreedGameMap);
+			Point quitPoint=DrawObj.DrawQuitGame(GreedGameMap);
+			if (IsContinueGame(continuePoint, quitPoint))
+			{
+				Control GameControl;
+				GameControl.InitGame();
+			}
 			break;
 		}
 	}
+	return ExitFlag;
 }
 
 //根据指令移动
@@ -153,4 +162,28 @@ bool Control::IsSnakeCurrentOrOppositeDirection(Direction direction)
 		return true;
 	else
 		return false;
+}
+
+bool Control::IsContinueGame(const Point& p1, const Point& p2)
+{
+	SetWindow setwindow;
+	bool continueFlag = false;
+	while (true)
+	{
+		int ch = _getch();
+		Point testpoint = setwindow.GetConsoleCursorPosition();
+		if (ch == EnterKey && setwindow.GetConsoleCursorPosition() == p1)
+		{
+			continueFlag = true;
+			break;
+		}
+		else if (ch == EnterKey && setwindow.GetConsoleCursorPosition() == p2)
+		{
+			continueFlag = false;
+			break;
+		}
+		else
+			continue;
+	}
+	return continueFlag;
 }

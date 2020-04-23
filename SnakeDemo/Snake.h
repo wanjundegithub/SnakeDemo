@@ -43,6 +43,8 @@ public:
 	bool EatFood(Point foodPoint);
 	//判定是否相邻格点
 	bool IsNeighborPoint(Point point1, Point point2);
+	//判断deque队列中是否包含蛇头部的点
+	bool IsContainHeadPoint();
 private:
 	//组成蛇的点
 	std::deque<Point> SnakePoints;

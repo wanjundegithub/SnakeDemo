@@ -32,8 +32,7 @@ void DrawGameIcon::DrawFailure(GameMap map)
 	SetWindow setWindow;
 	int centerX = (map.GetMinX() + map.GetMaxX()) / 2;
 	int centerY = (map.GetMinY() + map.GetMaxY()) / 2;
-	setWindow.SetCursorPosition(centerX - 5, centerY - 5);
-	//setWindow.SetWindowsTextColor(50);
+	setWindow.SetCursorPosition(centerX -4, centerY );
 	std::cout << "失败，是否退出?";
 }
 
@@ -45,4 +44,24 @@ void DrawGameIcon::DrawFood(Point point)
 	setWindow.SetCursorPosition(point.GetX(), point.GetY());
 	//setWindow.SetWindowsTextColor(45);
 	std::cout << "+";
+}
+
+Point DrawGameIcon::DrawQuitGame(GameMap map)
+{
+	SetWindow setWindow;
+	int centerX = (map.GetMinX() + map.GetMaxX()) / 2;
+	int centerY = (map.GetMinY() + map.GetMaxY()) / 2;
+	setWindow.SetCursorPosition(centerX - 7, centerY + 3);
+	std::cout << "是，直接退出";
+	return Point(centerX - 7, centerY + 3);
+}
+
+Point DrawGameIcon::DrawContinueGame(GameMap map)
+{
+	SetWindow setWindow;
+	int centerX = (map.GetMinX() + map.GetMaxX()) / 2;
+	int centerY = (map.GetMinY() + map.GetMaxY()) / 2;
+	setWindow.SetCursorPosition(centerX + 2, centerY + 3);
+	std::cout << "否，重新开始";
+	return Point(centerX + 2, centerY + 3);
 }

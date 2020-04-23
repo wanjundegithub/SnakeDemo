@@ -1,6 +1,8 @@
 #pragma once
+#include"Point.h"
 #include<stdio.h>
 #include<Windows.h>
+#include<iostream>
 
 class SetWindow
 {
@@ -13,5 +15,6 @@ public :
 	void  SetCursorPosition(int x, int y);
 	void  SetWindowsTextColor(int color);
 	void  SetWindowsTextBackgroundColor();
+	Point GetConsoleCursorPosition();
 };
 

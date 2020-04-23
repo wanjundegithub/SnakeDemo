@@ -17,6 +17,7 @@ public :
 	{
 
 	}
+	bool operator ==(const Point& p);
 	int GetX();
 	int GetY();
 private:
