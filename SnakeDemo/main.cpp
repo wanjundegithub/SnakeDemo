@@ -3,6 +3,6 @@
 int main()
 {
 	Control GameControl;
-	GameControl.InitGame();
+	GameControl.PlayGame();
 	return 0;
 }

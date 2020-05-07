@@ -1,30 +1,38 @@
 #include "Control.h"
-
 //初始化游戏
-void Control::InitGame()
+void Control::PlayGame()
 {
 	//游戏开始界面，欢迎进入游戏，点击Enter进入游戏界面
-	DrawGameIcon DrawObj;
-	bool ExitFlag = false;
-	SetWindow setWindow;
-	setWindow.SetWindowsTitleSize(30, 30);
-	setWindow.SetCursorPosition(7,15);
-	std::cout << "欢迎进入，点击Enter进入游戏界面" <<std::endl;
 	while (true)
 	{
+		system("cls");
+		DrawGameIcon DrawObj;
+		bool ExitFlag = false;
+		DrawObj.DrawWelcome();
 		int ch = _getch();
 		if (ch == EnterKey)
 		{
 			system("cls");
 			std::deque<Point> map= GreedGameMap.CreateMapWall();
 			DrawObj.DrawMap(map);
+			DrawObj.DrawScore(Score, GetScorePoint());
 			ExitFlag= KeyWordControl();
 		}
 		if (ch == EscKey||ExitFlag==true)
+		{
 			break;
+		}
+		else if (ExitFlag == false)
+		{
+			GreedSnake = Snake(GetSnakePoints());
+			GreedGameMap = GameMap(5, 5, 25, 25, false);
+			Speed = 2;
+			Score = 0;
+			continue;
+		}
 	}
+	_getch();
 }
-
 
 //键盘响应事件
 bool Control::KeyWordControl()
@@ -100,21 +108,37 @@ bool Control::KeyWordControl()
 			{
 				if (GreedSnake.EatFood(foodPoint))
 				{
+					Score++;
+					DrawObj.DrawScore(Score, GetScorePoint());
 					foodPoint = food.GenerateFood(GreedSnake.GetSnakePoints(), GreedGameMap);
 					DrawObj.DrawFood(foodPoint);
 				}
 			}
 		}
-		//蛇撞墙，游戏失败
+		//蛇撞墙，游戏失败或得到满分通关
 		if (IsFailureFlag == true)
 		{
 			DrawObj.DrawFailure(GreedGameMap);
-			Point continuePoint=DrawObj.DrawContinueGame(GreedGameMap);
-			Point quitPoint=DrawObj.DrawQuitGame(GreedGameMap);
-			if (IsContinueGame(continuePoint, quitPoint))
+			if (IsContinueGame()==true)
 			{
-				Control GameControl;
-				GameControl.InitGame();
+				ExitFlag = false;
+			}
+			else
+			{
+				ExitFlag = true;
+			}
+			break;
+		}
+		else if (Score == FullMark)
+		{
+			DrawObj.DrawGameClearance(GetFinishGamePoint());
+			if (IsContinueGame() == true)
+			{
+				ExitFlag = false;
+			}
+			else
+			{
+				ExitFlag = true;
 			}
 			break;
 		}
@@ -164,26 +188,82 @@ bool Control::IsSnakeCurrentOrOppositeDirection(Direction direction)
 		return false;
 }
 
-bool Control::IsContinueGame(const Point& p1, const Point& p2)
+bool Control::IsContinueGame()
 {
+	DrawGameIcon DrawObj;
+	Point p1 = GetQuitPoint();
+	Point p2 = GetContinuePoint();
+	DrawObj.DrawQuitGame(p1);
+	DrawObj.DrawContinueGame(p2);
 	SetWindow setwindow;
-	bool continueFlag = false;
+	setwindow.SetCursorPosition((p1.GetX() + p2.GetX()) / 2+3, (p1.GetY() + p2.GetY()) / 2);
+	bool IsContinueFlag = false;
+	bool flag=false;
+	int ch = 0;
 	while (true)
 	{
-		int ch = _getch();
-		Point testpoint = setwindow.GetConsoleCursorPosition();
-		if (ch == EnterKey && setwindow.GetConsoleCursorPosition() == p1)
+		if (_kbhit())
 		{
-			continueFlag = true;
-			break;
+			switch (_getch())
+			{
+			case LeftKey:
+				IsContinueFlag = false;
+				DrawObj.DrawQuitGame(p1);
+				setwindow.SetCursorPosition(p1.GetX() + 3, p1.GetY());
+				break;
+			case RightKey:
+				IsContinueFlag = true;
+				DrawObj.DrawContinueGame(p2);
+				setwindow.SetCursorPosition(p2.GetX() + 3, p2.GetY());
+				break;
+			case EnterKey:
+				flag = true;
+				break;
+			default:
+				break;
+			}
 		}
-		else if (ch == EnterKey && setwindow.GetConsoleCursorPosition() == p2)
-		{
-			continueFlag = false;
+		if (flag == true)
 			break;
-		}
-		else
-			continue;
 	}
-	return continueFlag;
+	return IsContinueFlag;
 }
+
+Point Control::GetQuitPoint()
+{
+	int centerX = (GreedGameMap.GetMinX() + GreedGameMap.GetMaxX()) / 2;
+	int centerY = (GreedGameMap.GetMinY() + GreedGameMap.GetMaxY()) / 2;
+	return Point(centerX - 7, centerY + 3);
+}
+
+Point Control::GetContinuePoint()
+{
+	int centerX = (GreedGameMap.GetMinX() + GreedGameMap.GetMaxX()) / 2;
+	int centerY = (GreedGameMap.GetMinY() + GreedGameMap.GetMaxY()) / 2;
+	return Point(centerX + 2, centerY + 3);
+}
+
+std::deque<Point> Control::GetSnakePoints()
+{
+	//初始化Snake对象
+	std::deque<Point> snakePoints;
+	snakePoints.emplace_front(Point(10, 10));
+	snakePoints.emplace_front(Point(10, 11));
+	snakePoints.emplace_front(Point(10, 12));
+	return snakePoints;
+}
+
+Point Control::GetScorePoint()
+{
+	int x = (GreedGameMap.GetMinX() + GreedGameMap.GetMaxX()) / 2 - 3;
+	int y = GreedGameMap.GetMinY() - 3;
+	return Point(x, y);
+}
+
+Point Control::GetFinishGamePoint()
+{
+	int x = (GreedGameMap.GetMinX() + GreedGameMap.GetMaxX()) / 2 - 3;
+	int y = (GreedGameMap.GetMinY() + GreedGameMap.GetMaxY()) / 2 - 3;
+	return Point(x, y);
+}
+

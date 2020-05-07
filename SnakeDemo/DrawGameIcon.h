@@ -21,8 +21,14 @@ public:
 	void DrawFailure(GameMap map);
 	//画食物
 	void DrawFood(Point point);
+	//画欢迎界面
+	void DrawWelcome();
 	//画退出游戏标志
-	Point DrawQuitGame(GameMap map);
+	void DrawQuitGame(Point p);
 	//画重新游戏标志
-	Point DrawContinueGame(GameMap map);
+	void DrawContinueGame(Point p);
+	//画得分
+	void DrawScore(int score, Point p);
+	//画通关界面
+	void DrawGameClearance(Point p);
 };

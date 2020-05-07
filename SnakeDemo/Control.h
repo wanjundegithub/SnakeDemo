@@ -13,6 +13,8 @@
 #define RightKey 77
 //暂停
 #define PauseSpaceKey 32
+//满分
+#define FullMark 20
 
 class Control
 {
@@ -20,18 +22,14 @@ public:
 	//初始化
 	Control()
 	{
+		Score = 0;
 		Speed = 2;
-		//初始化Snake对象
-		std::deque<Point> snakePoints;
-		snakePoints.emplace_front(Point(10, 10));
-		snakePoints.emplace_front(Point(10, 11));
-		snakePoints.emplace_front(Point(10, 12));
-		GreedSnake = Snake(snakePoints);
+		GreedSnake = Snake(GetSnakePoints());
 		//初始化Map对象
 		GreedGameMap = GameMap(5, 5, 25, 25, false);
 	}
 	//初始化游戏
-	void InitGame();
+	void PlayGame();
 	//键盘控制运动
 	bool KeyWordControl();
 	//根据按键指令运动
@@ -39,7 +37,17 @@ public:
 	//判定当前蛇运动方向与给定方向是否在一条直线上
 	bool IsSnakeCurrentOrOppositeDirection(Direction direction);
 	//用户决定是否继续游戏
-	bool IsContinueGame(const Point& p1, const Point& p2);
+	bool IsContinueGame();
+	//获取退出点坐标
+	Point GetQuitPoint();
+	//获取继续点坐标
+	Point GetContinuePoint();
+	//设置蛇体内初始坐标
+	std::deque<Point> GetSnakePoints();
+	//获取分数点坐标
+	Point GetScorePoint();
+	//获取通关点坐标
+	Point GetFinishGamePoint();
 private:
 	//蛇运动的速度（通过延时实现）
 	int Speed;
@@ -47,5 +55,7 @@ private:
 	Snake GreedSnake;
 	//游戏地图
 	GameMap GreedGameMap;
+	//得分
+	int Score;
 };
 

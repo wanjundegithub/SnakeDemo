@@ -46,22 +46,40 @@ void DrawGameIcon::DrawFood(Point point)
 	std::cout << "+";
 }
 
-Point DrawGameIcon::DrawQuitGame(GameMap map)
+void DrawGameIcon::DrawWelcome()
 {
 	SetWindow setWindow;
-	int centerX = (map.GetMinX() + map.GetMaxX()) / 2;
-	int centerY = (map.GetMinY() + map.GetMaxY()) / 2;
-	setWindow.SetCursorPosition(centerX - 7, centerY + 3);
-	std::cout << "是，直接退出";
-	return Point(centerX - 7, centerY + 3);
+	setWindow.SetWindowsTitleSize(30, 30);
+	setWindow.SetCursorPosition(7, 15);
+	std::cout << "欢迎进入，点击Enter进入游戏界面" << std::endl;
 }
 
-Point DrawGameIcon::DrawContinueGame(GameMap map)
+//画退出游戏
+void  DrawGameIcon::DrawQuitGame(Point p)
 {
 	SetWindow setWindow;
-	int centerX = (map.GetMinX() + map.GetMaxX()) / 2;
-	int centerY = (map.GetMinY() + map.GetMaxY()) / 2;
-	setWindow.SetCursorPosition(centerX + 2, centerY + 3);
+	setWindow.SetCursorPosition(p.GetX(),p.GetY());
+	std::cout << "是，直接退出";
+}
+
+//画继续游戏
+void  DrawGameIcon::DrawContinueGame(Point p)
+{
+	SetWindow setWindow;
+	setWindow.SetCursorPosition(p.GetX(), p.GetY());
 	std::cout << "否，重新开始";
-	return Point(centerX + 2, centerY + 3);
+}
+
+void DrawGameIcon::DrawScore(int score, Point p)
+{
+	SetWindow setWindow;
+	setWindow.SetCursorPosition(p.GetX(), p.GetY());
+	std::cout << " 得 分 : " << score << std::endl;
+}
+
+void DrawGameIcon::DrawGameClearance(Point p)
+{
+	SetWindow setWindow;
+	setWindow.SetCursorPosition(p.GetX(), p.GetY());
+	std::cout << " 恭 喜,已 通 关 ";
 }
